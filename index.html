@@ -459,12 +459,14 @@ function render() {
 }
 
 function renderSetup() {
-    const bookCheckboxes = books.map(book => `
-        <label class="flex items-center gap-2 p-2 rounded cursor-pointer text-sm ${state.selectedBooks.has(book) ? 'bg-amber-500/30' : 'bg-white/5'}" onclick="toggleBook('${book.replace(/'/g, "\\'")}')">
+    const bookCheckboxes = books.map(book => {
+        const escaped = book.replace(/'/g, "\\'");
+        return `
+        <div class="flex items-center gap-2 p-2 rounded cursor-pointer text-sm ${state.selectedBooks.has(book) ? 'bg-amber-500/30' : 'bg-white/5'}" onclick="toggleBook('${escaped}')">
             <input type="checkbox" ${state.selectedBooks.has(book) ? 'checked' : ''} class="accent-amber-500 pointer-events-none">
-            ${book}
-        </label>
-    `).join('');
+            <span class="pointer-events-none">${book}</span>
+        </div>
+    `}).join('');
     
     const diffBtns = [1, 2, 3].map(d => `
         <button onclick="toggleDiff(${d})" class="px-4 py-2 rounded-lg border-2 transition ${state.selectedDiff.has(d) 
